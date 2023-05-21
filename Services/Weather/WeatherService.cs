@@ -9,7 +9,7 @@ using WeatherApp.Data.Entities;
 using WeatherApp.Data.Repositories;
 using WeatherApp.EntityFramework;
 
-namespace WeatherApp.Services
+namespace WeatherApp.Services.Weather
 {
     public class WeatherService : IWeatherService, IWeatherCacheService
     {
@@ -22,7 +22,7 @@ namespace WeatherApp.Services
 
         public async Task<WeatherForecastDTO> GetWeatherForecastAsync(WeatherForecastParameters param)
         {
-            HttpClient httpClient = new ();
+            HttpClient httpClient = new();
             string apiUrl = "https://api.open-meteo.com/v1";
             string requestUrl = $"{apiUrl}/forecast?latitude={param.Latitude}&longitude={param.Longitude}&hourly=temperature_2m,relativehumidity_2m,apparent_temperature,precipitation_probability,surface_pressure,windspeed_10m,winddirection_10m&forecast_days={param.ForecastDays}&timezone=auto";
             HttpResponseMessage response = await httpClient.GetAsync(requestUrl);
@@ -30,7 +30,7 @@ namespace WeatherApp.Services
             {
                 string responseBody = await response.Content.ReadAsStringAsync();
                 WeatherForecastResponseDTO weatherForecastResponse = JsonConvert.DeserializeObject<WeatherForecastResponseDTO>(responseBody);
-                WeatherForecastDTO forecast = new ()
+                WeatherForecastDTO forecast = new()
                 {
                     TemperatureC = weatherForecastResponse.hourly.temperature_2m,
                     ApparentTemperatureC = weatherForecastResponse.hourly.apparent_temperature,
@@ -41,7 +41,7 @@ namespace WeatherApp.Services
                     SurfacePressure = weatherForecastResponse.hourly.surface_pressure
                 };
 
-                ThirdPartyRequest thirdPartyRequest = new ()
+                ThirdPartyRequest thirdPartyRequest = new()
                 {
                     Code = ThirdPartyAPICode.OpenMeteo,
                     Timestamp = DateTime.Now,
@@ -50,6 +50,7 @@ namespace WeatherApp.Services
 
                 await _weatherRepository.Add(thirdPartyRequest);
 
+                httpClient.Dispose();
                 return forecast;
             }
             httpClient.Dispose();

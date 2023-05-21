@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using WeatherApp.Data.DataTransferObjects;
 
-namespace WeatherApp.Services
+namespace WeatherApp.Services.Weather
 {
     public class WeatherCacheService : IWeatherCacheService
     {

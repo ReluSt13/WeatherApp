@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using WeatherApp.Data.Repositories;
 using WeatherApp.EntityFramework;
 using WeatherApp.Services;
+using WeatherApp.Services.Weather;
+using WeatherApp.Services.Location;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +21,12 @@ builder.Services.AddTransient<IWeatherRepository, WeatherRepository>();
 builder.Services.AddTransient<IWeatherService, WeatherService>();
 builder.Services.AddTransient<IWeatherCacheService, WeatherService>();
 builder.Services.Decorate<IWeatherCacheService, WeatherCacheService>();
+builder.Services.AddTransient<ILocationService, LocationService>();
+builder.Services.AddTransient<ILocationCacheService, LocationService>();
+builder.Services.Decorate<ILocationCacheService, LocationCacheService>();
+builder.Services.AddTransient<IReverseLocationService, ReverseLocationService>();
+builder.Services.AddTransient<IReverseLocationCacheService, ReverseLocationService>();
+builder.Services.Decorate<IReverseLocationCacheService, ReverseLocationCacheService>();
 
 string connectionString = builder.Configuration["ConnectionStrings:Default"];
 builder.Services.AddDbContext<WeatherContext>(options =>
@@ -36,6 +44,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors(cors =>
+{
+    cors
+        .AllowAnyOrigin()
+        .AllowAnyMethod()
+        .AllowAnyHeader();
+});
 
 app.UseHttpsRedirection();
 

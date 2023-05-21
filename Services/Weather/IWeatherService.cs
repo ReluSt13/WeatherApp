@@ -1,8 +1,8 @@
 ﻿using WeatherApp.Data.DataTransferObjects;
 
-namespace WeatherApp.Services
+namespace WeatherApp.Services.Weather
 {
-    public interface IWeatherCacheService
+    public interface IWeatherService
     {
         Task<WeatherForecastDTO> GetWeatherForecastAsync(WeatherForecastParameters param);
     }
