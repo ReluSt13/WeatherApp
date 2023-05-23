@@ -9,5 +9,6 @@
         public List<int> winddirection_10m { get; set; }
         public List<double> relativehumidity_2m { get; set; }
         public List<double> surface_pressure { get; set; }
+        public List<int> weathercode { get; set; }
     }
 }

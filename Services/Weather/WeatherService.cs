@@ -24,7 +24,7 @@ namespace WeatherApp.Services.Weather
         {
             HttpClient httpClient = new();
             string apiUrl = "https://api.open-meteo.com/v1";
-            string requestUrl = $"{apiUrl}/forecast?latitude={param.Latitude}&longitude={param.Longitude}&hourly=temperature_2m,relativehumidity_2m,apparent_temperature,precipitation_probability,surface_pressure,windspeed_10m,winddirection_10m&forecast_days={param.ForecastDays}&timezone=auto";
+            string requestUrl = $"{apiUrl}/forecast?latitude={param.Latitude}&longitude={param.Longitude}&hourly=temperature_2m,relativehumidity_2m,apparent_temperature,precipitation_probability,surface_pressure,windspeed_10m,winddirection_10m,weathercode&forecast_days={param.ForecastDays}&timezone=auto";
             HttpResponseMessage response = await httpClient.GetAsync(requestUrl);
             if (response.IsSuccessStatusCode)
             {
@@ -38,7 +38,8 @@ namespace WeatherApp.Services.Weather
                     WindSpeed = weatherForecastResponse.hourly.windspeed_10m,
                     WindDirection = weatherForecastResponse.hourly.winddirection_10m,
                     RelativeHumidity = weatherForecastResponse.hourly.relativehumidity_2m,
-                    SurfacePressure = weatherForecastResponse.hourly.surface_pressure
+                    SurfacePressure = weatherForecastResponse.hourly.surface_pressure,
+                    WeatherCode = weatherForecastResponse.hourly.weathercode
                 };
 
                 ThirdPartyRequest thirdPartyRequest = new()

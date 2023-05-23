@@ -9,6 +9,7 @@
         public List<int> WindDirection { get; set; }
         public List<double> RelativeHumidity { get; set; }
         public List<double> SurfacePressure { get; set; }
+        public List<int> WeatherCode { get; set; }
 
     }
 }

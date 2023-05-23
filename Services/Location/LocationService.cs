@@ -22,7 +22,7 @@ namespace WeatherApp.Services.Location
         {
             HttpClient httpClient = new();
             string apiUrl = "https://api.api-ninjas.com/v1";
-            string requestUrl = $"{apiUrl}/city?min_population=10000&limit=5&name={cityName}";
+            string requestUrl = $"{apiUrl}/city?min_population=5000&limit=5&name={cityName}";
             httpClient.DefaultRequestHeaders.Add("X-Api-Key", _configuration["APIKey"]);
             HttpResponseMessage response = await httpClient.GetAsync(requestUrl);
             if (response.IsSuccessStatusCode)
